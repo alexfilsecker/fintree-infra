@@ -1,0 +1,21 @@
+services:
+  fintree-db:
+    image: postgres
+    container_name: fintree-db
+    env_file:
+      - .envs/.local/.postgres.env
+    ports:
+      - 5432:5432
+    volumes:
+      - fintree-db-data:/var/lib/postgresql/data
+    networks:
+      - fintree-network
+
+volumes:
+  fintree-db-data:
+    name: fintree-db-data
+
+networks:
+  fintree-network:
+    driver: bridge
+    name: fintree-network
