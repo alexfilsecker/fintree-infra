@@ -2,18 +2,41 @@ services:
   fintree-db:
     image: postgres
     container_name: fintree-db
+    restart: always
     env_file:
-      - .envs/.local/.postgres.env
+      - .envs/.local/.postgres.root.env
     ports:
       - 5432:5432
     volumes:
-      - fintree-db-data:/var/lib/postgresql/data
+      - type: volume
+        source: fintree-db-data
+        target: /var/lib/postgresql/data
+    networks:
+      - fintree-network
+
+  fintree-mongo:
+    image: mongo
+    container_name: fintree-mongo
+    restart: always
+    env_file:
+      - .envs/.local/.mongo.root.env
+    ports:
+      - 27017:27017
+    volumes:
+      - type: volume
+        source: fintree-mongo-data
+        target: /data/db
+      - type: bind
+        source: ./docker/mongo/init-mongo.processed.js
+        target: /docker-entrypoint-initdb.d/init-mongo.js
     networks:
       - fintree-network
 
 volumes:
   fintree-db-data:
     name: fintree-db-data
+  fintree-mongo-data:
+    name: fintree-mongo-data
 
 networks:
   fintree-network:
