@@ -1,2 +1,2 @@
-docker/**/*.processed.js
+**/*.processed.*
 .envs/**/*.env

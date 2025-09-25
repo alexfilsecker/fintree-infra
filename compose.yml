@@ -14,6 +14,28 @@ services:
     networks:
       - fintree-network
 
+  fintree-migrate:
+    image: migrate/migrate
+    container_name: fintree-migrate
+    depends_on:
+      - fintree-db
+    volumes:
+      - type: bind
+        source: migrations
+        target: /migrations
+      - type: bind
+        source: docker/migrate/migrate-entrypoint.sh
+        target: /migrate-entrypoint.sh
+    networks:
+      - fintree-network
+    env_file:
+      - .envs/.local/.postgres.root.env
+    entrypoint:
+      - /migrate-entrypoint.sh
+    command:
+      - up
+    restart: "no"
+
   fintree-mongo:
     image: mongo
     container_name: fintree-mongo

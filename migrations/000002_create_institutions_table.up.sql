@@ -1,0 +1,4 @@
+CREATE TABLE institutions (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(50) UNIQUE
+);
